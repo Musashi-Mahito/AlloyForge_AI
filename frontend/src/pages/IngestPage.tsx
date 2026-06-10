@@ -7,7 +7,7 @@ export default function IngestPage() {
   const [name, setName] = useState("Ti-20Nb-6Zr-Custom");
   const [phase, setPhase] = useState("beta");
   const [composition, setComposition] = useState<Record<string, number>>({
-    Ti: 74, Nb: 20, Zr: 6, Ta: 0, Mo: 0, Fe: 0, Al: 0, V: 0, Cr: 0, Ni: 0
+    Ti: 0.74, Nb: 0.20, Zr: 0.06, Ta: 0, Mo: 0, Fe: 0, Al: 0, V: 0, Cr: 0, Ni: 0
   });
   
   const [properties, setProperties] = useState({
@@ -38,8 +38,8 @@ export default function IngestPage() {
     setError("");
     setSuccessData(null);
 
-    if (Math.abs(totalSum - 100.0) > 1.0) {
-      setError("Elemental compositions must sum to exactly 100% before submitting.");
+    if (Math.abs(totalSum - 1.0) > 0.01) {
+      setError("Elemental compositions must sum to exactly 1.0 before submitting.");
       setLoading(false);
       return;
     }
@@ -126,18 +126,18 @@ export default function IngestPage() {
           </div>
 
           {/* Composition selection sliders */}
-          <h4 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.75rem', borderBottom: '1px solid var(--border-dark)', paddingBottom: '0.25rem' }}>Elemental Composition (wt. %)</h4>
+          <h4 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.75rem', borderBottom: '1px solid var(--border-dark)', paddingBottom: '0.25rem' }}>Elemental Composition (Decimals)</h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
             {ELEMENTS.map(el => (
               <div key={el} style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
                   <span>{el}</span>
-                  <span style={{ color: 'var(--accent-cyan)' }}>{composition[el] || 0}%</span>
+                  <span style={{ color: 'var(--accent-cyan)' }}>{(composition[el] || 0).toFixed(2)}</span>
                 </div>
                 <input 
-                  type="range" min="0" max="100" step="1"
+                  type="range" min="0" max="1" step="0.01"
                   value={composition[el] || 0}
-                  onChange={(e) => handleSliderChange(el, parseInt(e.target.value))}
+                  onChange={(e) => handleSliderChange(el, parseFloat(e.target.value))}
                   className="slider-input"
                   style={{ height: '4px' }}
                 />
@@ -173,13 +173,13 @@ export default function IngestPage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-dark)', paddingTop: '1rem' }}>
             <div>
               <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Composition sum:</span>
-              <div style={{ fontWeight: 700, fontSize: '1rem', color: Math.abs(totalSum - 100.0) < 0.1 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
-                {totalSum}%
+              <div style={{ fontWeight: 700, fontSize: '1rem', color: Math.abs(totalSum - 1.0) < 0.01 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
+                {totalSum.toFixed(2)}
               </div>
             </div>
             <button 
               type="submit" className="btn" 
-              disabled={loading || Math.abs(totalSum - 100.0) > 1.0}
+              disabled={loading || Math.abs(totalSum - 1.0) > 0.01}
             >
               <Database size={16} />
               {loading ? "Ingesting..." : "Store in Database"}

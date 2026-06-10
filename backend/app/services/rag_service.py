@@ -152,7 +152,7 @@ class RAGService:
         """Queries the vector store for academic evidence matching the composition."""
         # Convert composition dict to text query string
         # e.g., "Ti Nb Zr Ta low modulus biocompatibility corrosion resistance"
-        query_elements = " ".join([el for el, wt in composition_wt.items() if wt > 2.0])
+        query_elements = " ".join([el for el, wt in composition_wt.items() if wt > 0.02])
         query = f"{query_elements} biocompatibility low modulus alloy corrosion"
         
         query_embedding = self.model.encode([query]).tolist()

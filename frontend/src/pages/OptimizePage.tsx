@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Target, Sparkles, BookOpen, Compass, ChevronDown, ChevronUp } from 'lucide-react';
+import { Target, Sparkles, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function OptimizePage() {
   const [constraints, setConstraints] = useState({
@@ -38,12 +38,12 @@ export default function OptimizePage() {
     } catch (err: any) {
       setError(err.message || "Online retrieval failed. Loading local optimization mockup.");
       
-      // Fallback local mockup to simulate discovery and RAG citations
+      // Fallback local mockup
       setTimeout(() => {
         setCandidates([
           {
-            name: "New-55.5Ti-28.0Nb-10.5Zr-6.0Ta",
-            composition: { Ti: 55.5, Nb: 28.0, Zr: 10.5, Ta: 6.0 },
+            name: "New-0.55Ti-0.28Nb-0.10Zr-0.06Ta",
+            composition: { Ti: 0.555, Nb: 0.28, Zr: 0.105, Ta: 0.06 },
             is_novel: true,
             properties: { elastic_modulus: 38.2, yield_strength: 865.0, uts: 945.0, corrosion_rate: 0.0018, biocompatibility_score: 0.98 },
             descriptors: { vec: 4.18, delta: 4.25, delta_h_mix: 1.1 },
@@ -66,7 +66,7 @@ export default function OptimizePage() {
           },
           {
             name: "Ti-35Nb-7Zr-5Ta (Beta Reference)",
-            composition: { Ti: 53.0, Nb: 35.0, Zr: 7.0, Ta: 5.0 },
+            composition: { Ti: 0.53, Nb: 0.35, Zr: 0.07, Ta: 0.05 },
             is_novel: false,
             properties: { elastic_modulus: 39.5, yield_strength: 810.0, uts: 890.0, corrosion_rate: 0.0015, biocompatibility_score: 0.98 },
             descriptors: { vec: 4.25, delta: 4.12, delta_h_mix: 1.25 },
@@ -199,7 +199,7 @@ export default function OptimizePage() {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', margin: '1rem 0' }}>
                     {Object.entries(cand.composition).map(([el, wt]: any) => (
                       <div key={el} style={{ background: 'var(--bg-darker)', border: '1px solid var(--border-dark)', borderRadius: '6px', padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>
-                        <span style={{ fontWeight: 600, color: 'var(--accent-cyan)' }}>{el}</span>: {wt.toFixed(1)}%
+                        <span style={{ fontWeight: 600, color: 'var(--accent-cyan)' }}>{el}</span>: {wt.toFixed(3)}
                       </div>
                     ))}
                   </div>

@@ -110,8 +110,11 @@ def generate_biomaterial_alloys(num_samples: int = 200) -> pd.DataFrame:
             biocompat = 0.55 + random.uniform(0.0, 0.05) # Ni content lowers score
             name = f"Fe-{cr:.1f}Cr-{ni:.1f}Ni-{mo:.1f}Mo-{i+1}"
             
+        # Convert composition values to decimals
+        comp_decimal = {el: wt / 100.0 for el, wt in comp.items()}
+        
         # Calculate descriptors
-        desc = calculate_metallurgical_descriptors(comp)
+        desc = calculate_metallurgical_descriptors(comp_decimal)
         
         # Merge dictionaries
         row = {
@@ -123,7 +126,7 @@ def generate_biomaterial_alloys(num_samples: int = 200) -> pd.DataFrame:
             "corrosion_rate": float(corrosion),
             "biocompatibility_score": float(biocompat)
         }
-        row.update(comp)
+        row.update(comp_decimal)
         row.update(desc)
         data.append(row)
         

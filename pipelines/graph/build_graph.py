@@ -136,7 +136,7 @@ class AlloyKnowledgeGraphBuilder:
         # We can run a cypher query to link alloys that share dominant elements
         similarity_query = """
         MATCH (a1:Alloy)-[c1:CONTAINS]->(e:Element)<-[c2:CONTAINS]->(a2:Alloy)
-        WHERE a1.name < a2.name AND c1.fraction > 15 AND c2.fraction > 15
+        WHERE a1.name < a2.name AND c1.fraction > 0.15 AND c2.fraction > 0.15
         WITH a1, a2, count(e) as shared_elements
         WHERE shared_elements >= 2
         MERGE (a1)-[:SIMILAR_TO {score: shared_elements * 0.25}]->(a2)

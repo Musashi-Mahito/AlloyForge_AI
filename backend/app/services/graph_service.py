@@ -119,7 +119,7 @@ class GraphService:
         # Add basic elements
         for el in elements:
             nodes.append({"id": el, "label": el, "type": "Element", "properties": {}})
-            links.append({"source": name, "target": el, "type": "CONTAINS", "value": 15.0})
+            links.append({"source": name, "target": el, "type": "CONTAINS", "value": 0.15})
             
         # Add one similar alloy
         nodes.append({"id": "Ti-29Nb-13Ta-4.6Zr", "label": "Ti-29Nb-13Ta-4.6Zr", "type": "Alloy", "properties": {"aus_score": 0.912}})

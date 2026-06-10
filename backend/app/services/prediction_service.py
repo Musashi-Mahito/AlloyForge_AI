@@ -13,12 +13,12 @@ class PredictionService:
 
     def predict(self, composition_wt: Dict[str, float]) -> Dict[str, Any]:
         """Predicts all physical properties from composition."""
-        # 1. Normalize composition to sum to 100
+        # 1. Normalize composition to sum to 1.0 (decimals)
         total = sum(composition_wt.values())
         if total == 0:
             norm_comp = {el: 0.0 for el in ELEMENT_LIST}
         else:
-            norm_comp = {el: (wt / total) * 100.0 for el, wt in composition_wt.items()}
+            norm_comp = {el: (wt / total) * 1.0 for el, wt in composition_wt.items()}
             
         props = self.evaluator.predict(norm_comp)
         
@@ -33,9 +33,9 @@ class PredictionService:
 
     def explain(self, composition_wt: Dict[str, float], target_property: str) -> Dict[str, Any]:
         """Calculates SHAP values explaining the model's prediction for target_property."""
-        # Normalize
+        # Normalize to sum to 1.0
         total = sum(composition_wt.values())
-        norm_comp = {el: (wt / total) * 100.0 for el, wt in composition_wt.items()} if total > 0 else {el: 0.0 for el in ELEMENT_LIST}
+        norm_comp = {el: (wt / total) * 1.0 for el, wt in composition_wt.items()} if total > 0 else {el: 0.0 for el in ELEMENT_LIST}
         
         # Compute inputs vector
         desc = calculate_metallurgical_descriptors(norm_comp)

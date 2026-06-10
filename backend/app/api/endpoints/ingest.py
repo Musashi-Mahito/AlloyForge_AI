@@ -11,10 +11,10 @@ router = APIRouter()
 
 @router.post("/")
 def ingest_alloy(request: IngestionRequest, db: Session = Depends(get_db)):
-    # 1. Verify weight fractions sum to 100%
+    # 1. Verify weight fractions sum to 1.0
     total = sum(request.composition.values())
-    if abs(total - 100.0) > 1.0:
-        raise HTTPException(status_code=400, detail="Composition percentages must sum to approximately 100%.")
+    if abs(total - 1.0) > 0.01:
+        raise HTTPException(status_code=400, detail="Composition fractions must sum to approximately 1.0.")
 
     # 2. Check if name already exists
     existing = db.query(DBAlloy).filter(DBAlloy.name == request.name).first()

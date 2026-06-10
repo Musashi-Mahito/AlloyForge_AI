@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Eye, HelpCircle, ArrowRight } from 'lucide-react';
 
 const PRESETS = [
-  { name: "Ti-35Nb-7Zr-5Ta (Low Modulus)", composition: { Ti: 53, Nb: 35, Zr: 7, Ta: 5 } },
-  { name: "Ti-6Al-4V (High Modulus)", composition: { Ti: 90, Al: 6, V: 4 } },
-  { name: "316L Stainless Steel (High Modulus)", composition: { Fe: 68, Cr: 18, Ni: 12, Mo: 2 } }
+  { name: "Ti-35Nb-7Zr-5Ta (Low Modulus)", composition: { Ti: 0.53, Nb: 0.35, Zr: 0.07, Ta: 0.05 } },
+  { name: "Ti-6Al-4V (High Modulus)", composition: { Ti: 0.90, Al: 0.06, V: 0.04 } },
+  { name: "316L Stainless Steel (High Modulus)", composition: { Fe: 0.68, Cr: 0.18, Ni: 0.12, Mo: 0.02 } }
 ];
 
 export default function ExplainPage() {
@@ -65,9 +65,13 @@ export default function ExplainPage() {
         });
       }
     } finally {
-      setLoading(false);
+      extractionsCompleted();
     }
   };
+
+  const extractionsCompleted = () => {
+    setLoading(false);
+  }
 
   useEffect(() => {
     fetchExplanation();
@@ -103,7 +107,7 @@ export default function ExplainPage() {
               >
                 <div style={{ fontWeight: 600 }}>{p.name}</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
-                  {Object.entries(p.composition).map(([el, wt]) => `${el}: ${wt}%`).join(', ')}
+                  {Object.entries(p.composition).map(([el, wt]) => `${el}: ${(wt).toFixed(2)}`).join(', ')}
                 </div>
               </div>
             ))}

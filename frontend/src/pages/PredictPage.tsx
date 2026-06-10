@@ -4,15 +4,15 @@ import { Sliders, Cpu, Activity, Info } from 'lucide-react';
 const ELEMENTS = ["Ti", "Nb", "Zr", "Ta", "Mo", "Fe", "Al", "V", "Cr", "Ni"];
 
 const PRESETS = [
-  { name: "Ti-6Al-4V (Alpha-Beta)", composition: { Ti: 90, Al: 6, V: 4 } },
-  { name: "Ti-35Nb-7Zr-5Ta (Beta Implant)", composition: { Ti: 53, Nb: 35, Zr: 7, Ta: 5 } },
-  { name: "316L Stainless Steel", composition: { Fe: 68, Cr: 18, Ni: 12, Mo: 2 } },
-  { name: "Ni-30Cr-6Mo (Co-Cr Alt)", composition: { Ni: 64, Cr: 30, Mo: 6 } }
+  { name: "Ti-6Al-4V (Alpha-Beta)", composition: { Ti: 0.90, Al: 0.06, V: 0.04 } },
+  { name: "Ti-35Nb-7Zr-5Ta (Beta Implant)", composition: { Ti: 0.53, Nb: 0.35, Zr: 0.07, Ta: 0.05 } },
+  { name: "316L Stainless Steel", composition: { Fe: 0.68, Cr: 0.18, Ni: 0.12, Mo: 0.02 } },
+  { name: "Ni-30Cr-6Mo (Co-Cr Alt)", composition: { Ni: 0.64, Cr: 0.30, Mo: 0.06 } }
 ];
 
 export default function PredictPage() {
   const [composition, setComposition] = useState<Record<string, number>>({
-    Ti: 100, Nb: 0, Zr: 0, Ta: 0, Mo: 0, Fe: 0, Al: 0, V: 0, Cr: 0, Ni: 0
+    Ti: 1.0, Nb: 0, Zr: 0, Ta: 0, Mo: 0, Fe: 0, Al: 0, V: 0, Cr: 0, Ni: 0
   });
   
   const [loading, setLoading] = useState(false);
@@ -20,17 +20,12 @@ export default function PredictPage() {
   const [result, setResult] = useState<any>(null);
 
   const handleSliderChange = (el: string, val: number) => {
-    setComposition(prev => {
-      const next = { ...prev, [el]: val };
-      // Keep sum aligned
-      return next;
-    });
+    setComposition(prev => ({ ...prev, [el]: val }));
   };
 
   const applyPreset = (preset: typeof PRESETS[0]) => {
     const next = { Ti: 0, Nb: 0, Zr: 0, Ta: 0, Mo: 0, Fe: 0, Al: 0, V: 0, Cr: 0, Ni: 0 };
     Object.assign(next, preset.composition);
-    // Fill remainder with base if needed, or keep exact
     setComposition(next);
   };
 
@@ -38,7 +33,7 @@ export default function PredictPage() {
     setLoading(true);
     setError("");
     
-    // Normalize composition sum to 100%
+    // Normalize composition sum to 1.0 (decimals)
     const total = Object.values(composition).reduce((a, b) => a + b, 0);
     if (total === 0) {
       setError("Please add at least one element weight.");
@@ -48,7 +43,7 @@ export default function PredictPage() {
     
     const normalizedComp: Record<string, number> = {};
     for (const [el, wt] of Object.entries(composition)) {
-      normalizedComp[el] = (wt / total) * 100;
+      normalizedComp[el] = wt / total;
     }
 
     try {
@@ -66,14 +61,14 @@ export default function PredictPage() {
       setResult(data);
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
-      // Apply mock/simulation fallback if backend is offline to keep visual demo working
+      // Apply mock/simulation fallback if backend is offline
       setResult({
         composition: normalizedComp,
         descriptors: { vec: 4.22, delta: 4.15, delta_h_mix: -12.4, delta_s_mix: 8.54, delta_chi: 0.15, bo_bar: 2.92, md_bar: 2.38 },
         predicted_properties: {
-          elastic_modulus: 42.5 + (normalizedComp.Nb || 0) * -0.5,
-          yield_strength: 720 + (normalizedComp.Nb || 0) * 8.5,
-          uts: 840 + (normalizedComp.Nb || 0) * 10.2,
+          elastic_modulus: 42.5 + (normalizedComp.Nb || 0) * -50.0,
+          yield_strength: 720 + (normalizedComp.Nb || 0) * 850.0,
+          uts: 840 + (normalizedComp.Nb || 0) * 1020.0,
           corrosion_rate: 0.003,
           biocompatibility_score: 0.95
         }
@@ -93,7 +88,7 @@ export default function PredictPage() {
     <div>
       <div className="dashboard-title-section">
         <h2>🧬 Property Prediction Sandbox</h2>
-        <p className="dashboard-subtitle">Configure element weight percentages to calculate physical properties via surrogate machine learning models.</p>
+        <p className="dashboard-subtitle">Configure element decimal fractions to calculate physical properties via surrogate machine learning models.</p>
       </div>
 
       <div className="grid-cols-2">
@@ -119,13 +114,13 @@ export default function PredictPage() {
             <div className="slider-group" key={el}>
               <div className="slider-label-row">
                 <span className="slider-name">{el}</span>
-                <span className="slider-value">{composition[el] || 0}%</span>
+                <span className="slider-value">{(composition[el] || 0).toFixed(2)}</span>
               </div>
               <input
                 type="range"
                 min="0"
-                max="100"
-                step="1"
+                max="1"
+                step="0.01"
                 value={composition[el] || 0}
                 onChange={(e) => handleSliderChange(el, parseFloat(e.target.value))}
                 className="slider-input"
@@ -135,9 +130,9 @@ export default function PredictPage() {
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border-dark)' }}>
             <div>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Total Weight Sum:</span>
-              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: Math.abs(totalSum - 100) < 0.1 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
-                {totalSum.toFixed(1)}%
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Total Fraction Sum:</span>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: Math.abs(totalSum - 1.0) < 0.01 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
+                {totalSum.toFixed(2)}
               </div>
             </div>
             <button className="btn" onClick={runPrediction} disabled={loading}>
@@ -149,7 +144,7 @@ export default function PredictPage() {
         </div>
 
         {/* Right Side: Prediction results */}
-        <div style={{ display: 'flex', flexParagraph: 'column', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {result && (
             <>
               {/* Properties Card */}

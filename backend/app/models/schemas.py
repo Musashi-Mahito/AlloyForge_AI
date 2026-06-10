@@ -4,8 +4,8 @@ from typing import Dict, List, Optional, Any
 class PredictionRequest(BaseModel):
     composition: Dict[str, float] = Field(
         ..., 
-        example={"Ti": 70.0, "Nb": 20.0, "Zr": 5.0, "Ta": 5.0},
-        description="Elemental weight percentages (should sum to 100)"
+        example={"Ti": 0.70, "Nb": 0.20, "Zr": 0.05, "Ta": 0.05},
+        description="Elemental weight fractions (should sum to 1.0)"
     )
     model_name: Optional[str] = Field("catboost", description="Surrogate model type (catboost, xgboost, mlp)")
 
@@ -83,7 +83,7 @@ class RAGQueryRequest(BaseModel):
 
 class IngestionRequest(BaseModel):
     name: str = Field(..., example="Custom-Ti-35Nb")
-    composition: Dict[str, float] = Field(..., example={"Ti": 65.0, "Nb": 35.0})
+    composition: Dict[str, float] = Field(..., example={"Ti": 0.65, "Nb": 0.35})
     phase: str = Field("beta", example="beta")
     properties: Dict[str, float] = Field(
         ..., 

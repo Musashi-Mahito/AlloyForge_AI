@@ -9,8 +9,8 @@ prediction_service = PredictionService()
 def explain_prediction(request: ExplanationRequest):
     # Enforce constraints
     total_wt = sum(request.composition.values())
-    if abs(total_wt - 100.0) > 1.0:
-        raise HTTPException(status_code=400, detail="Elemental composition percentages must sum to approximately 100%.")
+    if abs(total_wt - 1.0) > 0.01:
+        raise HTTPException(status_code=400, detail="Elemental composition fractions must sum to approximately 1.0.")
         
     valid_properties = ["elastic_modulus", "yield_strength", "uts", "corrosion_rate", "biocompatibility_score"]
     if request.target_property not in valid_properties:

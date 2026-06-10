@@ -6,25 +6,25 @@ This report compiles performance comparisons across PyTorch Multilayer Perceptro
 
 | Target Property | Metric | PyTorch MLP | XGBoost | CatBoost |
 | :--- | :--- | :--- | :--- | :--- |
-| **elastic_modulus** | R² | 0.9700 | N/A | 0.7237 |
-| | RMSE | 10.5250 | N/A | 31.9383 |
-| | MAE | 6.1200 | N/A | 12.9035 |
+| **elastic_modulus** | R² | 0.9579 | N/A | 0.7237 |
+| | RMSE | 12.4703 | N/A | 31.9383 |
+| | MAE | 7.0300 | N/A | 12.9035 |
 | | | | | |
-| **yield_strength** | R² | 0.0074 | N/A | 0.6277 |
-| | RMSE | 222.4413 | N/A | 136.2223 |
-| | MAE | 103.5718 | N/A | 58.6607 |
+| **yield_strength** | R² | 0.0534 | N/A | 0.6277 |
+| | RMSE | 217.2193 | N/A | 136.2223 |
+| | MAE | 101.6521 | N/A | 58.6607 |
 | | | | | |
-| **uts** | R² | -0.3089 | N/A | 0.1622 |
-| | RMSE | 225.4202 | N/A | 180.3496 |
-| | MAE | 107.7597 | N/A | 76.4980 |
+| **uts** | R² | -0.2420 | N/A | 0.1622 |
+| | RMSE | 219.5824 | N/A | 180.3496 |
+| | MAE | 104.8438 | N/A | 76.4980 |
 | | | | | |
-| **corrosion_rate** | R² | 0.7684 | N/A | 0.9838 |
-| | RMSE | 0.0045 | N/A | 0.0012 |
+| **corrosion_rate** | R² | 0.7782 | N/A | 0.9838 |
+| | RMSE | 0.0044 | N/A | 0.0012 |
 | | MAE | 0.0024 | N/A | 0.0006 |
 | | | | | |
-| **biocompatibility_score** | R² | 0.9726 | N/A | 0.9988 |
-| | RMSE | 0.0336 | N/A | 0.0069 |
-| | MAE | 0.0234 | N/A | 0.0051 |
+| **biocompatibility_score** | R² | 0.9840 | N/A | 0.9988 |
+| | RMSE | 0.0256 | N/A | 0.0069 |
+| | MAE | 0.0193 | N/A | 0.0051 |
 | | | | | |
 
 ## Key Findings

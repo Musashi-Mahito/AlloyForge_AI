@@ -8,7 +8,7 @@ client = TestClient(app)
 def test_descriptor_calculations():
     """Verify descriptor logic behaves correctly for a sample composition."""
     # Ti-35Nb-7Zr-5Ta system
-    comp = {"Ti": 53.0, "Nb": 35.0, "Zr": 7.0, "Ta": 5.0}
+    comp = {"Ti": 0.53, "Nb": 0.35, "Zr": 0.07, "Ta": 0.05}
     desc = calculate_metallurgical_descriptors(comp)
     
     assert "vec" in desc
@@ -20,7 +20,7 @@ def test_descriptor_calculations():
 def test_predict_endpoint():
     """Test POST request to predictions endpoint."""
     payload = {
-        "composition": {"Ti": 53.0, "Nb": 35.0, "Zr": 7.0, "Ta": 5.0},
+        "composition": {"Ti": 0.53, "Nb": 0.35, "Zr": 0.07, "Ta": 0.05},
         "model_name": "catboost"
       }
     

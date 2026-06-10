@@ -93,7 +93,7 @@ class RecommendationService:
                 from pipelines.features.generation import calculate_metallurgical_descriptors
                 desc = calculate_metallurgical_descriptors(comp)
                 
-                name_parts = [f"{wt:.1f}{el}" for el, wt in sorted(comp.items(), key=lambda x: x[1], reverse=True)]
+                name_parts = [f"{wt:.3f}{el}" for el, wt in sorted(comp.items(), key=lambda x: x[1], reverse=True)]
                 name = "New-" + "-".join(name_parts)
                 
                 candidates.append({
@@ -200,14 +200,14 @@ class RecommendationService:
         return [
             {
                 "name": "Ti-35Nb-7Zr-5Ta",
-                "composition": {"Ti": 53.0, "Nb": 35.0, "Zr": 7.0, "Ta": 5.0},
+                "composition": {"Ti": 0.53, "Nb": 0.35, "Zr": 0.07, "Ta": 0.05},
                 "properties": {"elastic_modulus": 39.5, "yield_strength": 810.0, "uts": 890.0, "corrosion_rate": 0.0015, "biocompatibility_score": 0.98},
                 "descriptors": {"vec": 4.25, "delta": 4.12, "delta_h_mix": 1.25, "delta_s_mix": 8.32, "delta_chi": 0.12},
                 "is_novel": False
             },
             {
                 "name": "Ti-15Mo",
-                "composition": {"Ti": 85.0, "Mo": 15.0},
+                "composition": {"Ti": 0.85, "Mo": 0.15},
                 "properties": {"elastic_modulus": 42.0, "yield_strength": 780.0, "uts": 850.0, "corrosion_rate": 0.002, "biocompatibility_score": 0.92},
                 "descriptors": {"vec": 4.30, "delta": 3.8, "delta_h_mix": -2.1, "delta_s_mix": 4.2, "delta_chi": 0.08},
                 "is_novel": False

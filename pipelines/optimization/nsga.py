@@ -111,16 +111,16 @@ class AlloyDesignProblem(ElementwiseProblem):
             n_obj=5,  # Minimize E, Minimize CR, Maximize UTS, Maximize Biocompatibility, Maximize AUS
             n_constr=2, # E <= 45 GPa, UTS >= 800 MPa
             xl=0.0,
-            xu=100.0
+            xu=1.0
         )
 
     def _evaluate(self, x, out, *args, **kwargs):
-        # 1. Normalize variables to sum to 100% (simplex mapping)
+        # 1. Normalize variables to sum to 1.0 (simplex mapping)
         total = np.sum(x)
         if total == 0:
-            wt_percentages = [100.0 / 10] * 10
+            wt_percentages = [1.0 / 10] * 10
         else:
-            wt_percentages = (x / total) * 100.0
+            wt_percentages = (x / total) * 1.0
             
         composition_wt = {ELEMENT_LIST[i]: float(wt_percentages[i]) for i in range(10)}
         
@@ -169,8 +169,8 @@ class AlloyOptimizationEngine:
             X_sol = [res.X] if res.X.ndim == 1 else res.X
             for x in X_sol:
                 total = np.sum(x)
-                wt = (x / total) * 100.0 if total > 0 else np.array([10.0]*10)
-                comp = {ELEMENT_LIST[i]: round(float(wt[i]), 2) for i in range(10) if wt[i] > 0.05}
+                wt = (x / total) * 1.0 if total > 0 else np.array([0.1]*10)
+                comp = {ELEMENT_LIST[i]: round(float(wt[i]), 4) for i in range(10) if wt[i] > 0.0005}
                 
                 desc = calculate_metallurgical_descriptors(comp)
                 props = self.evaluator.predict(comp)
@@ -192,13 +192,13 @@ class AlloyOptimizationEngine:
             # Propose weights for each element
             weights = {}
             for el in ELEMENT_LIST:
-                weights[el] = trial.suggest_float(el, 0.0, 100.0)
+                weights[el] = trial.suggest_float(el, 0.0, 1.0)
                 
             total = sum(weights.values())
             if total == 0:
-                comp = {el: 10.0 for el in ELEMENT_LIST}
+                comp = {el: 0.1 for el in ELEMENT_LIST}
             else:
-                comp = {el: (weights[el] / total) * 100.0 for el in ELEMENT_LIST}
+                comp = {el: (weights[el] / total) * 1.0 for el in ELEMENT_LIST}
                 
             desc = calculate_metallurgical_descriptors(comp)
             props = self.evaluator.predict(comp)
@@ -219,8 +219,8 @@ class AlloyOptimizationEngine:
         best_trial = study.best_trial
         best_weights = best_trial.params
         total = sum(best_weights.values())
-        best_comp = {el: round((best_weights[el] / total) * 100.0, 2) for el in ELEMENT_LIST}
-        best_comp = {el: val for el, val in best_comp.items() if val > 0.05}
+        best_comp = {el: round((best_weights[el] / total) * 1.0, 4) for el in ELEMENT_LIST}
+        best_comp = {el: val for el, val in best_comp.items() if val > 0.0005}
         
         desc = calculate_metallurgical_descriptors(best_comp)
         props = self.evaluator.predict(best_comp)

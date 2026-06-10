@@ -20,8 +20,8 @@ except Exception:
 def predict_properties(request: PredictionRequest):
     # Enforce weights constraint
     total_wt = sum(request.composition.values())
-    if abs(total_wt - 100.0) > 1.0:
-        raise HTTPException(status_code=400, detail="Elemental composition percentages must sum to approximately 100%.")
+    if abs(total_wt - 1.0) > 0.01:
+        raise HTTPException(status_code=400, detail="Elemental composition fractions must sum to approximately 1.0.")
 
     # Generate cache key
     cache_key = None

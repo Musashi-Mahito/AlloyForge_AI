@@ -34,10 +34,10 @@ export default function GraphPage() {
           { id: selectedAlloy, label: selectedAlloy, type: "Alloy", properties: { phase: "beta", aus_score: 0.942 } },
           { id: "beta", label: "beta", type: "Phase", properties: {} },
           { id: "10.1016/j.matdes.2016.12.011", label: "Review on low modulus...", type: "Paper", properties: { doi: "10.1016/j.matdes.2016.12.011", year: 2017 } },
-          { id: "Ti", label: "Ti (53%)", type: "Element", properties: { vec: 4, radius: 147 } },
-          { id: "Nb", label: "Nb (35%)", type: "Element", properties: { vec: 5, radius: 146 } },
-          { id: "Zr", label: "Zr (7%)", type: "Element", properties: { vec: 4, radius: 160 } },
-          { id: "Ta", label: "Ta (5%)", type: "Element", properties: { vec: 5, radius: 146 } },
+          { id: "Ti", label: "Ti (0.53)", type: "Element", properties: { vec: 4, radius: 147 } },
+          { id: "Nb", label: "Nb (0.35)", type: "Element", properties: { vec: 5, radius: 146 } },
+          { id: "Zr", label: "Zr (0.07)", type: "Element", properties: { vec: 4, radius: 160 } },
+          { id: "Ta", label: "Ta (0.05)", type: "Element", properties: { vec: 5, radius: 146 } },
           { id: "Ti-29Nb-13Ta-4.6Zr", label: "Ti-29Nb-13Ta", type: "Alloy", properties: { aus_score: 0.91 } }
         ];
         
