@@ -4,10 +4,11 @@ import ExplainPage from './pages/ExplainPage.tsx';
 import OptimizePage from './pages/OptimizePage.tsx';
 import RAGPage from './pages/RAGPage.tsx';
 import GraphPage from './pages/GraphPage.tsx';
+import IngestPage from './pages/IngestPage.tsx';
 import { Layers } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'predict' | 'explain' | 'optimize' | 'rag' | 'graph'>('predict');
+  const [activeTab, setActiveTab] = useState<'predict' | 'explain' | 'optimize' | 'rag' | 'graph' | 'ingest'>('predict');
 
   const renderContent = () => {
     switch (activeTab) {
@@ -21,6 +22,8 @@ export default function App() {
         return <RAGPage />;
       case 'graph':
         return <GraphPage />;
+      case 'ingest':
+        return <IngestPage />;
       default:
         return <PredictPage />;
     }
@@ -72,6 +75,12 @@ export default function App() {
             onClick={() => setActiveTab('graph')}
           >
             Knowledge Graph
+          </button>
+          <button 
+            className={`nav-item ${activeTab === 'ingest' ? 'active' : ''}`}
+            onClick={() => setActiveTab('ingest')}
+          >
+            Alloy Ingest
           </button>
         </nav>
 

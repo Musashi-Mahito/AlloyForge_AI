@@ -80,3 +80,19 @@ class RecommendedAlloySchema(BaseModel):
 class RAGQueryRequest(BaseModel):
     composition: Dict[str, float]
     n_results: Optional[int] = Field(3, ge=1, le=10)
+
+class IngestionRequest(BaseModel):
+    name: str = Field(..., example="Custom-Ti-35Nb")
+    composition: Dict[str, float] = Field(..., example={"Ti": 65.0, "Nb": 35.0})
+    phase: str = Field("beta", example="beta")
+    properties: Dict[str, float] = Field(
+        ..., 
+        example={
+            "elastic_modulus": 40.0,
+            "yield_strength": 800.0,
+            "uts": 900.0,
+            "corrosion_rate": 0.002,
+            "biocompatibility_score": 0.98
+        }
+    )
+
