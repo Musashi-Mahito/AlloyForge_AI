@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: alloy_postgres
+    environment:
+      POSTGRES_DB: alloy_db
+      POSTGRES_USER: alloy_user
+      POSTGRES_PASSWORD: alloy_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alloy_user -d alloy_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  neo4j:
+    image: neo4j:5.12-community
+    container_name: alloy_neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/alloy_graph_password
+    volumes:
+      - neo4jdata:/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: alloy_redis
+    ports:
+      - "6379:6379"
+
+  chromadb:
+    image: chromadb/chroma:0.4.15
+    container_name: alloy_chroma
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadata:/chroma/data
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.8.0
+    container_name: alloy_mlflow
+    ports:
+      - "5000:5000"
+    command: mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root /mlflow-artifacts --host 0.0.0.0
+    volumes:
+      - mlflowdata:/mlflow-artifacts
+
+volumes:
+  pgdata:
+  neo4jdata:
+  chromadata:
+  mlflowdata:

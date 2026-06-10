@@ -1,0 +1,23 @@
+artifact_path: /Users/prathmesh/Desktop/Projects/thesis/thesis_project/mlruns/1/models/m-c052177cec9d4dd08c70b1fb7a575eb4/artifacts
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.14.5
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.12.0
+mlflow_version: 3.13.0
+model_id: m-c052177cec9d4dd08c70b1fb7a575eb4
+model_size_bytes: 65497
+model_uuid: m-c052177cec9d4dd08c70b1fb7a575eb4
+prompts: null
+run_id: 0a0a5bab27b241748914125b68acdd96
+utc_time_created: '2026-06-10 20:40:31.534983'
